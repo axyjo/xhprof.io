@@ -191,85 +191,74 @@ class Data
 			$sth1->bindValue(':cpu', $data['cpu'], \PDO::PARAM_INT);
 			$sth1->bindValue(':mu', $data['mu'], \PDO::PARAM_INT);
 			$sth1->bindValue(':pmu', $data['pmu'], \PDO::PARAM_INT);
-			
+
 			$call	= explode('==>', $call);
-						
+
 			if(count($call) == 1)
 			{
-			    // callee
-				$sth2->execute(array('name' => $call[0]));
-			    
-			    $callee_id		= $sth2->fetch(\PDO::FETCH_COLUMN);
-			    
-			    if(!$callee_id)
-			    {
-				    $sth3->execute(array('name' => $call[0]));
-				    
-				    $callee_id	= $this->db->lastInsertId();
-			    }
-			    
-			    $sth1->bindValue(':caller_id', NULL, \PDO::PARAM_NULL);
-				$sth1->bindValue(':callee_id', $callee_id);
+				$caller = null;
+				$callee = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $call[0]);
+			} else {
+				$caller = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $call[0]);
+				$callee = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $call[1]);
 			}
-			else
-			{
-				// caller
-				$sth2->execute(array('name' => $call[0]));
-			    
-			    $caller_id		= $sth2->fetch(\PDO::FETCH_COLUMN);
-			    
-			    if(!$caller_id)
-			    {
-				    $sth3->execute(array('name' => $call[0]));
-				    
+
+			// Caller
+			if(is_null($caller)) {
+				$sth1->bindValue(':caller_id', NULL, \PDO::PARAM_INT);
+			} else {
+				$sth2->execute(array('name' => $caller));
+			    $caller_id = $sth2->fetch(\PDO::FETCH_COLUMN);
+			    $sth2->closeCursor();
+			    if(!$caller_id) {
+					$sth3->execute(array('name' => $caller));
 				    $caller_id	= $this->db->lastInsertId();
-			    }
-			    
-			    // callee
-				$sth2->execute(array('name' => $call[1]));
-			    
-			    $callee_id		= $sth2->fetch(\PDO::FETCH_COLUMN);
-			    
-			    if(!$callee_id)
-			    {
-				    $sth3->execute(array('name' => $call[1]));
-				    
-				    $callee_id	= $this->db->lastInsertId();
-			    }
-			    
-			
+				    $sth3->closeCursor();
+				}
 				$sth1->bindValue(':caller_id', $caller_id, \PDO::PARAM_INT);
-				$sth1->bindValue(':callee_id', $callee_id, \PDO::PARAM_INT);
 			}
-			
+
+			// Callee
+			$sth2->execute(array('name' => $callee));
+		    $callee_id = $sth2->fetch(\PDO::FETCH_COLUMN);
+		    $sth2->closeCursor();
+		    if(!$callee_id) {
+				$sth3->execute(array('name' => $callee));
+			    $callee_id	= $this->db->lastInsertId();
+			    $sth3->closeCursor();
+			}
+			$sth1->bindValue(':callee_id', $callee_id, \PDO::PARAM_INT);
+
 			$sth1->execute();
-			
+			$sth1->closeCursor();
+
 			if(count($call) == 1)
 		    {
 		    	$call_id	= $this->db->lastInsertId();
-		    
+
 			    $this->db
 			    	->prepare("UPDATE `requests` SET `request_caller_id` = :request_caller_id WHERE `id` = :request_id;")
 			    	->execute(array('request_caller_id' => $call_id, 'request_id' => $request_id));
 		    }
+
 		}
-		
+
 		return $request_id;
 	}
-	
+
 	public function getHosts(array $query = NULL)
 	{
 		$this->aggregateRequestData($query, array('datetime_from', 'datetime_to', 'host', 'host_id'));
-	
+
 		$data				= array();
-		
+
 		$data['discrete']	= $this->db->query("
 			SELECT
 				`host_id`,
 				`host`,
-				
+
 				COUNT(`request_id`) `request_count`,
-				
+
 				AVG(`wt`) `wt`,
 				AVG(`cpu`) `cpu`,
 				AVG(`mu`) `mu`,
