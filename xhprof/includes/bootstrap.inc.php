@@ -61,39 +61,8 @@ if(filter_has_var(INPUT_POST, 'ay'))
 	array_walk_recursive($_POST['ay'], function(&$e){
 		$e	= trim($e);
 	});
-	
-	// Flash variable keeps track of the $_POST data in case there is an error 
+
+	// Flash variable keeps track of the $_POST data in case there is an error
 	// validating the form input and user needs to be returned to the form.
 	$_SESSION['ay']['flash']['input']	= $_POST['ay'];
-}
-
-if(empty($_SESSION['xhprof']['remote_version']))
-{
-	$ch			= curl_init();
-	
-	curl_setopt_array($ch, array(
-		CURLOPT_URL				=> 'http://xhprof.io/version',
-		CURLOPT_HEADER			=> FALSE,
-		CURLOPT_RETURNTRANSFER	=> TRUE
-	));
-	
-	$response	= curl_exec($ch);
-	
-	curl_close($ch);
-	
-	$version	= json_decode($response, TRUE);
-	
-	if(!empty($version['version']))
-	{
-		$_SESSION['xhprof']['remote_version']	= $version['version'];
-	}
-	
-	unset($version, $response);
-}
-
-if(!empty($_SESSION['xhprof']['remote_version']) && $_SESSION['xhprof']['remote_version'] != VERSION)
-{
-	\ay\message('You are running an out-of-date version of XHProf.io (' . VERSION . '). The <a href="http://xhprof.io/" target="_blank">current version is ' . htmlspecialchars($_SESSION['xhprof']['remote_version']) . '</a>.', \AY\MESSAGE_NOTICE);
-	
-	unset($_SESSION['xhprof']['remote_version']);
 }
