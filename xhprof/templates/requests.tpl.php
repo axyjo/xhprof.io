@@ -22,7 +22,7 @@ require __DIR__ . '/summary.inc.tpl.php';
 
 require __DIR__ . '/histogram.inc.tpl.php';
 ?>
-<div class="table-wrapper">
+<!--<div class="table-wrapper">
 	<table class="requests ay-sort">
 		<thead class="ay-sticky">
 			<tr>
@@ -34,7 +34,7 @@ require __DIR__ . '/histogram.inc.tpl.php';
 				<th class="ay-sort date-time" rowspan="2" data-ay-sort-index="8">Request Time</th>
 			</tr>
 			<tr>
-				
+
 				<th class="ay-sort" data-ay-sort-index="4">Wall Time</th>
 				<th class="ay-sort" data-ay-sort-index="5">CPU</th>
 				<th class="ay-sort" data-ay-sort-index="6">Memory Usage</th>
@@ -43,7 +43,7 @@ require __DIR__ . '/histogram.inc.tpl.php';
 		</thead>
 		<tbody>
 			<?php foreach($data['discrete'] as $e):
-				$e	= format_metrics($e);			
+				$e	= format_metrics($e);
 			?>
 			<tr data-request-id="<?=$e['request_id']?>">
 				<td data-ay-sort-weight="<?=$e['request_id']?>"><a href="<?=url('request', array('request_id' => $e['request_id']))?>"><?=$e['request_id']?></a></td>
@@ -59,4 +59,4 @@ require __DIR__ . '/histogram.inc.tpl.php';
 			<?php endforeach;?>
 		</tbody>
 	</table>
-</div>
+</div>-->
