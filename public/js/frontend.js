@@ -83,8 +83,6 @@ $(function(){
 		};
 
 		$.getJSON('data.php' + window.location.search, function(o) {
-			console.log(arguments);
-
 			var filter	= crossfilter(o.discrete);
 			var data	= {
 				id: {
@@ -121,6 +119,8 @@ $(function(){
 			var mu_top = data.mu.dimension.top(1)[0];
 			var mu_bottom = data.mu.dimension.bottom(1)[0];
 			var mu_chart = dc.barChart("#histogram-mu");
+			var table = dc.dataTable("#data-table");
+
 			mu_chart
 				.width(400)
 				.height(225)
@@ -138,10 +138,35 @@ $(function(){
 						if (i === 0) return '';
 						if (i % 2 == 1)	return format.bytes(d);
 					});
+
+			table
+				// set dimension
+				.dimension(data.date.dimension)
+				// data table does not use crossfilter group but rather a closure
+				// as a grouping function
+				.group(function(d) {
+					//return (new Date(d.request_timestamp)).getFullYear();
+				})
+				// (optional) max number of records to be shown, :default = 25
+				.size(10)
+				// dynamic columns creation using an array of closures
+				.columns([
+					function(d) { return d.request_id; },
+					function(d) { return d.host; },
+					function(d) { return d.uri; },
+					function(d) { return d.request_method; },
+					function(d) { return format.microseconds(d.wt); },
+					function(d) { return format.microseconds(d.cpu); },
+					function(d) { return format.bytes(d.mu); },
+					function(d) { return format.bytes(d.pmu); },
+					function(d) { return d.request_timestamp; }
+				])
+				// (optional) sort using the given field, :default = function(d){return d;}
+				.sortBy(function(d){ return d.request_timestamp; })
+				// (optional) sort order, :default ascending
+				.order(d3.descending);
+
 			dc.renderAll();
-
-
-
 		});
 	}
 });

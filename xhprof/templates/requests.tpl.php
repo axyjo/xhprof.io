@@ -22,8 +22,8 @@ require __DIR__ . '/summary.inc.tpl.php';
 
 require __DIR__ . '/histogram.inc.tpl.php';
 ?>
-<!--<div class="table-wrapper">
-	<table class="requests ay-sort">
+<div class="table-wrapper">
+	<table class="requests ay-sort" id="data-table">
 		<thead class="ay-sticky">
 			<tr>
 				<th class="ay-sort ay-sort-desc request-id" rowspan="2">Request ID</th>
@@ -42,21 +42,6 @@ require __DIR__ . '/histogram.inc.tpl.php';
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach($data['discrete'] as $e):
-				$e	= format_metrics($e);
-			?>
-			<tr data-request-id="<?=$e['request_id']?>">
-				<td data-ay-sort-weight="<?=$e['request_id']?>"><a href="<?=url('request', array('request_id' => $e['request_id']))?>"><?=$e['request_id']?></a></td>
-				<td data-ay-sort-weight="<?=htmlspecialchars($e['host'])?>"><a href="<?=url('uris', array('host_id' => $e['host_id']))?>"><?=htmlspecialchars($e['host'])?></a></td>
-				<td data-ay-sort-weight="<?=htmlspecialchars($e['uri'])?>"><a href="<?=url('uris', array('host_id' => $e['host_id'], 'uri_id' => $e['uri_id']))?>"><?=htmlspecialchars($e['uri'])?></a></td>
-				<td><?=$e['request_method']?></td>
-				<td class="metrics" data-ay-sort-weight="<?=$e['wt']['raw']?>"><?=$e['wt']['formatted']?></td>
-				<td class="metrics" data-ay-sort-weight="<?=$e['cpu']['raw']?>"><?=$e['cpu']['formatted']?></td>
-				<td class="metrics" data-ay-sort-weight="<?=$e['mu']['raw']?>"><?=$e['mu']['formatted']?></td>
-				<td class="metrics" data-ay-sort-weight="<?=$e['pmu']['raw']?>"><?=$e['pmu']['formatted']?></td>
-				<td data-ay-sort-weight="<?=$e['request_timestamp']?>"><?=date(\AY\FORMAT_DATETIME, $e['request_timestamp'])?></td>
-			</tr>
-			<?php endforeach;?>
 		</tbody>
 	</table>
-</div>-->
+</div>
