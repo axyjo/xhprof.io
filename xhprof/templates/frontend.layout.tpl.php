@@ -6,7 +6,7 @@ namespace ay\xhprof;
 	<link rel="stylesheet" href="public/css/frontend.css" type="text/css" charset="utf-8">
 
 	<script type="text/javascript" src="public/js/jquery-1.8.2.min.js"></script>
-
+	<script type="text/javascript" src="public/js/ICanHaz.js"></script>
 	<script type="text/javascript" src="public/js/d3.v2.js"></script>
 	<script type="text/javascript" src="public/js/crossfilter.v1.js"></script>
 	<script type="text/javascript" src="public/js/dc.js"></script>
