@@ -9,9 +9,6 @@ $navigation	= array
 );
 ?>
 <div id="navigation">
-	<div class="button-filter">Filter</div>
-	<div class="button-summary">Summary</div>
-
 <?php foreach($navigation as $e):?>
 	<a href="<?=$e['url']?>"<?php if(!empty($e['class'])):?> class="<?=$e['class']?>"<?php endif;?>><?=$e['name']?></a>
 <?php endforeach;?>
@@ -19,12 +16,15 @@ $navigation	= array
 <?php if($template['file'] == 'request' && empty($_GET['xhprof']['query']['second_request_id'])):?>
 	<a href="<?=url('request', array('request_id' => $request['id']), array('callgraph' => 1))?>" class="callgraph" target="_blank">Callgraph</a>
 <?php endif;?>
+
+	<div class="button button-filter">Filter</div>
+	<div class="button button-summary">Summary</div>
 </div>
 <?php
 unset($navigation);
 
 if(!\ay\error_present() && !empty($_GET['xhprof']['query'])):
-	
+
 $labels	= array
 (
 	'host_id'			=> 'Host #',
@@ -44,12 +44,12 @@ $labels	= array
 	<p>The following filters affect the displayed data:</p>
 	<dl>
 	<?php foreach($_GET['xhprof']['query'] as $k => $v):
-		
+
 		if(!isset($labels[$k]))
 		{
 			throw new \Exception('Filter label is not defined.');
 		}
-		
+
 		if($k == 'request_id'):
 	?>
 		<dt><?=$labels[$k]?></dt>

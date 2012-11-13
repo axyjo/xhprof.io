@@ -35,12 +35,14 @@ html {
   background: #fff;
   color: #111;
 }
-#navigation > a.button-summary,
-#navigation > div.button-summary,
-#navigation > a.button-filter,
-#navigation > div.button-filter {
-  background: #2d53af;
+#navigation > a.button,
+#navigation > div.button {
   color: #fff;
+  float: right;
+}
+#navigation > a.button.active,
+#navigation > div.button.active {
+  background: #2d53af;
 }
 #filter {
   margin: 20px;
@@ -353,7 +355,6 @@ table {
 }
 table th,
 table td {
-  padding: 5px;
   text-align: left;
   font-size: 12px;
   padding: 5px;

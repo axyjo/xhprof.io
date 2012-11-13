@@ -1,10 +1,12 @@
 $(function(){
 	$('#navigation .button-filter').on('click', function(){
 		$('#filter').toggle();
+		$(this).toggleClass('active');
 	});
 
 	$('#navigation .button-summary').on('click', function(){
 		$('#metrics-summary').toggle();
+		$(this).toggleClass('active');
 	});
 
 	if($('table.aggregated-callstack').length)
