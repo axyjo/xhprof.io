@@ -15,6 +15,13 @@ namespace ay\xhprof;
 	<?=$template['body']?>
 
 	<?php require __DIR__ . '/footer.inc.tpl.php';?>
+	<script type="text/javascript">
+		var App = App || {};
+		App.config = {
+			base_url: "<?=BASE_URL?>"
+		}
+	</script>
+	<script type="text/javascript" src="public/js/php.js"></script>
 	<script type="text/javascript" src="public/js/jquery-1.8.2.min.js"></script>
 	<script type="text/javascript" src="public/js/ICanHaz.js"></script>
 	<script type="text/javascript" src="public/js/d3.v2.js"></script>
