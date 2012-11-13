@@ -1928,9 +1928,8 @@ dc.barChart = function(parent, chartGroup) {
     }
 
     function barWidth(d) {
-        debugger;
         var numberOfBars = getNumberOfBars();
-        var w = Math.floor(_chart.xAxisLength() / numberOfBars);4
+        var w = Math.floor(_chart.xAxisLength() / numberOfBars);
         w -= _gap;
         if (isNaN(w) || w < MIN_BAR_WIDTH)
             w = MIN_BAR_WIDTH;
