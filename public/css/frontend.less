@@ -392,3 +392,222 @@ table
 		mark { color: #000; padding: 2px 3px; background: none; font-family: monospace; }
 	}
 }
+
+.dc-data-table {
+	width: 700px;
+	margin-bottom: 50px;
+	thead {
+		font-weight: bold;
+		td {
+			background-color: #c6dbef;
+			color: white;
+		}
+	}
+	td {
+		display: table-cell;
+		width: 135px;
+		text-align: center;
+		margin-left: 2px;
+		margin-right: 2px;
+		padding: 5px;
+		border: white solid 2px;
+	}
+	tr.group {
+		td.label {
+			font-weight: bold;
+			font-size: larger;
+			float: inherit;
+		}
+	}
+}
+
+.dc-data-count {
+	float: right;
+	margin-top: 15px;
+	margin-right: 15px;
+	.filter-count {
+		color: #3182bd;
+		font-weight: bold;
+	}
+	.total-count {
+		color: #3182bd;
+		font-weight: bold;
+	}
+}
+
+.dc-chart .axis path, .axis line {
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
+}
+
+.dc-chart {
+	float: left;
+	rect.bar:hover {
+		fill-opacity: .5;
+	}
+	g.debug {
+		rect {
+			fill: blue;
+			fill-opacity: .2;
+		}
+	}
+	path.area {
+		fill: steelblue;
+		fill-opacity: .3;
+		stroke: none;
+	}
+	circle.dot {
+		fill: steelblue;
+	}
+	g.state {
+		cursor: pointer;
+		:hover {
+			fill-opacity: .8;
+		}
+		path {
+			stroke: white;
+		}
+	}
+	.bubble {
+		stroke: none;
+		fill-opacity: 0.6;
+	}
+	.grid-line {
+		line {
+			fill: none;
+			stroke: #ccc;
+			opacity: .5;
+			shape-rendering: crispEdges;
+		}
+	}
+	.axis {
+		text {
+			font: 10px sans-serif;
+		}
+	}
+	g.deselected {
+		text {
+			display: none;
+		}
+		path {
+			fill: grey;
+		}
+	}
+	.brush {
+		rect.extent {
+			fill: steelblue;
+			fill-opacity: .125;
+		}
+		.resize {
+			path {
+				fill: #eee;
+				stroke: #666;
+			}
+		}
+		rect.background {
+			z-index: -999;
+		}
+	}
+	g.tooltip {
+		path {
+			fill: none;
+			stroke: grey;
+			stroke-opacity: .8;
+		}
+	}
+	.node {
+		font-size: 0.7em;
+		cursor: pointer;
+		:hover {
+			fill-opacity: .8;
+		}
+	}
+	g.stack1 {
+		path.area {
+			fill: green;
+		}
+		circle.dot {
+			fill: green;
+		}
+		path.line {
+			stroke: green;
+		}
+	}
+	path.line {
+		fill: none;
+		stroke: steelblue;
+		stroke-width: 1.5px;
+	}
+	.pie-slice {
+		fill: white;
+		font-size: 12px;
+		cursor: pointer;
+		:hover {
+			fill-opacity: .8;
+		}
+	}
+	g.county {
+		path {
+			stroke: white;
+			fill: none;
+		}
+	}
+	g.stack2 {
+		path.area {
+			fill: red;
+		}
+		circle.dot {
+			fill: red;
+		}
+		path.line {
+			stroke: red;
+		}
+	}
+	rect.deselected {
+		stroke: none;
+		fill: #ccc;
+	}
+	rect.stack1 {
+		stroke: none;
+		fill: red;
+	}
+	.selected {
+		circle {
+			stroke-width: 3;
+			stroke: #ccc;
+			fill-opacity: 1;
+		}
+		path {
+			stroke-width: 3;
+			stroke: #ccc;
+			fill-opacity: 1;
+		}
+	}
+	.sub {
+		.bar {
+			stroke: none;
+			fill: #ccc;
+		}
+	}
+	rect.stack2 {
+		stroke: none;
+		fill: green;
+	}
+	rect.bar {
+		stroke: none;
+		fill: steelblue;
+	}
+	.deselected {
+		circle {
+			strok: none;
+			fill-opacity: .5;
+			fill: #ccc;
+		}
+		path {
+			strok: none;
+			fill-opacity: .5;
+			fill: #ccc;
+		}
+	}
+}
