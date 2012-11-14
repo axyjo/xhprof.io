@@ -148,83 +148,58 @@ $(function(){
 			data.pmu.group	= data.pmu.dimension.group(function(d){ return Math.floor(d / 2500000)*2500000; });
 
 			var all = filter.groupAll();
-			var mu_top = data.mu.dimension.top(1)[0];
-			var mu_chart = dc.barChart("#histogram-mu");
-			var pmu_top = data.pmu.dimension.top(1)[0];
-			var pmu_chart = dc.barChart("#histogram-pmu");
-			var wt_chart = dc.barChart("#histogram-wt");
-			var wt_top = data.wt.dimension.top(1)[0];
-			var cpu_chart = dc.barChart("#histogram-cpu");
-			var cpu_top = data.cpu.dimension.top(1)[0];
 			var table = dc.dataTable("#data-table");
+			var counter = dc.dataCount("#data-count");
+			var small_charts = [
+				{
+					chart: dc.barChart("#histogram-mu"),
+					dimension: data.mu.dimension,
+					group: data.mu.group,
+					top: data.mu.dimension.top(1)[0].mu,
+					format: format.bytes
+				},
+				{
+					chart: dc.barChart("#histogram-pmu"),
+					dimension: data.pmu.dimension,
+					group: data.pmu.group,
+					top: data.pmu.dimension.top(1)[0].pmu,
+					format: format.bytes
+				},
+				{
+					chart: dc.barChart("#histogram-wt"),
+					dimension: data.wt.dimension,
+					group: data.wt.group,
+					top: data.wt.dimension.top(1)[0].wt,
+					format: format.microseconds
+				},
+				{
+					chart: dc.barChart("#histogram-cpu"),
+					dimension: data.cpu.dimension,
+					group: data.cpu.group,
+					top: data.cpu.dimension.top(1)[0].cpu,
+					format: format.microseconds
+				}
+			];
 
-			mu_chart
-				.width(400)
-				.height(225)
-				.dimension(data.mu.dimension)
-				.group(data.mu.group)
-				.elasticY(true)
-				.centerBar(true)
-				.gap(1)
-				.round(dc.round.floor)
-				.x(d3.scale.linear().domain([-1, mu_top.mu * 1.01]))
-				.xUnits(units.megabytes)
-				.xAxis()
-					.tickFormat(function(d, i) {
+			$.each(small_charts, function(i, data) {
+				data.chart
+					.width(400).height(225)
+					.dimension(data.dimension).group(data.group)
+					.elasticX(true).elasticY(true)
+					.x(d3.scale.linear()
+						.domain([0, data.top])
+						.rangeRound([0, data.top])
+					)
+					.xAxis()
+						.tickFormat(function(d, i) {
 						if (i === 0) return '';
-						if (i % 2 == 1)	return format.bytes(d);
+						if (i % 2 == 1)	return data.format(d);
 					});
+			});
 
-			pmu_chart
-				.width(400)
-				.height(225)
-				.dimension(data.pmu.dimension)
-				.group(data.pmu.group)
-				.elasticY(true)
-				.centerBar(true)
-				.gap(1)
-				.round(dc.round.floor)
-				.x(d3.scale.linear().domain([-1, pmu_top.pmu * 1.01]))
-				.xUnits(units.megabytes)
-				.xAxis()
-					.tickFormat(function(d, i) {
-						if (i === 0) return '';
-						if (i % 2 == 1)	return format.bytes(d);
-					});
-
-			wt_chart
-				.width(400)
-				.height(225)
-				.dimension(data.wt.dimension)
-				.group(data.wt.group)
-				.elasticY(true)
-				.centerBar(true)
-				.gap(1)
-				.round(dc.round.floor)
-				.x(d3.scale.linear().domain([-1, wt_top.wt * 1.1]))
-				.xUnits(units.megabytes)
-				.xAxis()
-					.tickFormat(function(d, i) {
-						if (i === 0) return '';
-						if (i % 2 == 1)	return format.microseconds(d);
-					});
-
-			cpu_chart
-				.width(400)
-				.height(225)
-				.dimension(data.cpu.dimension)
-				.group(data.cpu.group)
-				.elasticY(true)
-				.centerBar(true)
-				.gap(1)
-				.round(dc.round.floor)
-				.x(d3.scale.linear().domain([-1, cpu_top.cpu * 1.01]))
-				.xUnits(units.megabytes)
-				.xAxis()
-					.tickFormat(function(d, i) {
-						if (i === 0) return '';
-						if (i % 2 == 1)	return format.microseconds(d);
-					});
+			counter
+				.dimension(filter)
+				.group(all);
 
 			table
 				// set dimension
