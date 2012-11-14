@@ -125,10 +125,10 @@ $(function(){
 					dimension: filter.dimension(function(d){ return new Date(d.request_timestamp*1000); })
 				},
 				wt: {
-					dimension: filter.dimension(function(d){ return d.wt; })
+					dimension: filter.dimension(function(d){ return parseInt(d.wt, 10); })
 				},
 				cpu: {
-					dimension: filter.dimension(function(d){ return d.cpu; })
+					dimension: filter.dimension(function(d){ return parseInt(d.cpu, 10); })
 				},
 				mu: {
 					dimension: filter.dimension(function(d){ return parseInt(d.mu, 10); })
@@ -143,7 +143,7 @@ $(function(){
 			data.id.group	= data.id.dimension.group();
 			data.date.group	= data.date.dimension.group(function(d){ return d3.time[date_scale.name](d); });
 			data.wt.group	= data.wt.dimension.group(function(d){ return Math.floor(d / 1000)*1000; });
-			data.cpu.group	= data.cpu.dimension.group(function(d){ return Math.floor(d / 100)*100; });
+			data.cpu.group	= data.cpu.dimension.group(function(d){ return Math.floor(d / 10)*10; });
 			data.mu.group	= data.mu.dimension.group(function(d){ return Math.floor(d / 2500000)*2500000; });
 			data.pmu.group	= data.pmu.dimension.group(function(d){ return Math.floor(d / 2500000)*2500000; });
 
@@ -152,19 +152,22 @@ $(function(){
 			var mu_chart = dc.barChart("#histogram-mu");
 			var pmu_top = data.pmu.dimension.top(1)[0];
 			var pmu_chart = dc.barChart("#histogram-pmu");
+			var wt_chart = dc.barChart("#histogram-wt");
+			var wt_top = data.wt.dimension.top(1)[0];
+			var cpu_chart = dc.barChart("#histogram-cpu");
+			var cpu_top = data.cpu.dimension.top(1)[0];
 			var table = dc.dataTable("#data-table");
 
 			mu_chart
 				.width(400)
 				.height(225)
-				.margins({top: 10, right: 30, bottom: 30, left: 30})
 				.dimension(data.mu.dimension)
 				.group(data.mu.group)
 				.elasticY(true)
 				.centerBar(true)
 				.gap(1)
 				.round(dc.round.floor)
-				.x(d3.scale.linear().domain([0, mu_top.mu]))
+				.x(d3.scale.linear().domain([-1, mu_top.mu * 1.01]))
 				.xUnits(units.megabytes)
 				.xAxis()
 					.tickFormat(function(d, i) {
@@ -175,19 +178,52 @@ $(function(){
 			pmu_chart
 				.width(400)
 				.height(225)
-				.margins({top: 10, right: 30, bottom: 30, left: 30})
 				.dimension(data.pmu.dimension)
 				.group(data.pmu.group)
 				.elasticY(true)
 				.centerBar(true)
 				.gap(1)
 				.round(dc.round.floor)
-				.x(d3.scale.linear().domain([0, pmu_top.pmu]))
+				.x(d3.scale.linear().domain([-1, pmu_top.pmu * 1.01]))
 				.xUnits(units.megabytes)
 				.xAxis()
 					.tickFormat(function(d, i) {
 						if (i === 0) return '';
 						if (i % 2 == 1)	return format.bytes(d);
+					});
+
+			wt_chart
+				.width(400)
+				.height(225)
+				.dimension(data.wt.dimension)
+				.group(data.wt.group)
+				.elasticY(true)
+				.centerBar(true)
+				.gap(1)
+				.round(dc.round.floor)
+				.x(d3.scale.linear().domain([-1, wt_top.wt * 1.1]))
+				.xUnits(units.megabytes)
+				.xAxis()
+					.tickFormat(function(d, i) {
+						if (i === 0) return '';
+						if (i % 2 == 1)	return format.microseconds(d);
+					});
+
+			cpu_chart
+				.width(400)
+				.height(225)
+				.dimension(data.cpu.dimension)
+				.group(data.cpu.group)
+				.elasticY(true)
+				.centerBar(true)
+				.gap(1)
+				.round(dc.round.floor)
+				.x(d3.scale.linear().domain([-1, cpu_top.cpu * 1.01]))
+				.xUnits(units.megabytes)
+				.xAxis()
+					.tickFormat(function(d, i) {
+						if (i === 0) return '';
+						if (i % 2 == 1)	return format.microseconds(d);
 					});
 
 			table
@@ -223,10 +259,10 @@ $(function(){
 					function(d) { return format.bytes(d.pmu); },
 					function(d) { return d.request_timestamp; }
 				])
+				.order(d3.descending)
 				// (optional) sort using the given field, :default = function(d){return d;}
-				.sortBy(function(d){ return parseInt(d.request_timestamp, 10); })
+				.sortBy(function(d){ return parseInt(d.request_timestamp, 10); });
 				// (optional) sort order, :default ascending
-				.order(d3.descending);
 
 			dc.renderAll();
 		});
