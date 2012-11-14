@@ -10,15 +10,17 @@ $navigation	= array
 ?>
 <div id="navigation">
 <?php foreach($navigation as $e):?>
-	<a href="<?=$e['url']?>"<?php if(!empty($e['class'])):?> class="<?=$e['class']?>"<?php endif;?>><?=$e['name']?></a>
+	<div class="button <?=$e['class']?>">
+		<a href="<?=$e['url']?>"<?php if(!empty($e['class'])):?> class="<?=$e['class']?>"<?php endif;?>><?=$e['name']?></a>
+	</div>
 <?php endforeach;?>
 
 <?php if($template['file'] == 'request' && empty($_GET['xhprof']['query']['second_request_id'])):?>
 	<a href="<?=url('request', array('request_id' => $request['id']), array('callgraph' => 1))?>" class="callgraph" target="_blank">Callgraph</a>
 <?php endif;?>
 
-	<div class="button button-filter">Filter</div>
-	<div class="button button-summary">Summary</div>
+	<div class="button button-filter"><a>Filter</a></div>
+	<div class="button button-summary"><a>Summary</a></div>
 </div>
 <?php
 unset($navigation);

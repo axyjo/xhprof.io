@@ -13,13 +13,15 @@ namespace ay\xhprof;
     </script>
 </head>
 <body class="template-<?=$template['file']?>">
-	<?php require __DIR__ . '/header.inc.tpl.php';?>
+	<div class="container-fluid">
+		<?php require __DIR__ . '/header.inc.tpl.php';?>
 
-	<?=\ay\display_messages()?>
+		<?=\ay\display_messages()?>
 
-	<?=$template['body']?>
+		<?=$template['body']?>
 
-	<?php require __DIR__ . '/footer.inc.tpl.php';?>
+		<?php require __DIR__ . '/footer.inc.tpl.php';?>
+	</div>
 	<script type="text/javascript">
 		var App = App || {};
 		App.config = {
