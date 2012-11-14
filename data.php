@@ -109,9 +109,11 @@ else
 
 $xhprof_data_obj	= new Data($config['pdo']);
 $data = array('type' => 'error', 'message' => 'No data was returned from this template.');
-if($_GET['xhprof']['template'] == 'requests') {
-	if(!\ay\error_present()) {
+if(!\ay\error_present()) {
+	if($_GET['xhprof']['template'] == 'requests') {
 		$data = $xhprof_data_obj->getRequests($_GET['xhprof']['query']);
+	} elseif ($_GET['xhprof']['template'] == 'hosts') {
+		$data = $xhprof_data_obj->getHosts($_GET['xhprof']['query']);
 	}
 }
 echo json_encode($data);
