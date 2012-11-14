@@ -73,39 +73,41 @@ $(function(){
 		});
 	}
 
-	if($('body').hasClass('template-requests')) {
-		var format	= {
-			bytes: function(number) {
-				var precision	= 2;
-				var base		= Math.log(Math.abs(number)) / Math.log(1024);
-				var suffixes	= ['b', 'k', 'M', 'G', 'T'];
+	var format	= {
+		bytes: function(number) {
+			var precision	= 2;
+			var base		= Math.log(Math.abs(number)) / Math.log(1024);
+			var suffixes	= ['b', 'k', 'M', 'G', 'T'];
 
-				return (Math.pow(1024, base - Math.floor(base))).toFixed(precision) + ' ' + suffixes[Math.floor(base)];
-			},
-			microseconds: function(number) {
-				var pad		= false;
-				var suffix	= '&mu;s';
+			return (Math.pow(1024, base - Math.floor(base))).toFixed(precision) + ' ' + suffixes[Math.floor(base)];
+		},
+		microseconds: function(number) {
+			var pad		= false;
+			var suffix	= '&mu;s';
+
+			if (number >= 1000) {
+				number	= number / 1000;
+				suffix	= 'ms';
 
 				if (number >= 1000) {
+					pad		= true;
+
 					number	= number / 1000;
-					suffix	= 'ms';
+					suffix	= 's';
 
-					if (number >= 1000) {
-						pad		= true;
-
-						number	= number / 1000;
-						suffix	= 's';
-
-						if (number >= 60) {
-							number	= number / 60;
-							suffix	= 'm';
-						}
+					if (number >= 60) {
+						number	= number / 60;
+						suffix	= 'm';
 					}
 				}
-
-				return pad ? number.toFixed(2) + ' ' + suffix : number + ' ' + suffix;
 			}
-		};
+
+			return pad ? number.toFixed(2) + ' ' + suffix : number + ' ' + suffix;
+		}
+	};
+
+	if($('body').hasClass('template-requests')) {
+
 
 		var units = {
 			megabytes: function(start, end) {
@@ -142,10 +144,10 @@ $(function(){
 
 			data.id.group	= data.id.dimension.group();
 			data.date.group	= data.date.dimension.group(function(d){ return d3.time[date_scale.name](d); });
-			data.wt.group	= data.wt.dimension.group(function(d){ return Math.floor(d / 1000)*1000; });
-			data.cpu.group	= data.cpu.dimension.group(function(d){ return Math.floor(d / 10)*10; });
-			data.mu.group	= data.mu.dimension.group(function(d){ return Math.floor(d / 2500000)*2500000; });
-			data.pmu.group	= data.pmu.dimension.group(function(d){ return Math.floor(d / 2500000)*2500000; });
+			data.wt.group	= data.wt.dimension.group(function(d){ return Math.floor(d/100000)*100000; });
+			data.cpu.group	= data.cpu.dimension.group(function(d){ return Math.floor(d/100000)*100000; });
+			data.mu.group	= data.mu.dimension.group(function(d){ return Math.floor(d); });
+			data.pmu.group	= data.pmu.dimension.group(function(d){ return Math.floor(d); });
 
 			var all = filter.groupAll();
 			var table = dc.dataTable("#data-table");
@@ -183,7 +185,7 @@ $(function(){
 
 			$.each(small_charts, function(i, data) {
 				data.chart
-					.width(400).height(225)
+					.width(400).height(200)
 					.dimension(data.dimension).group(data.group)
 					.elasticX(true).elasticY(true)
 					.x(d3.scale.linear()
@@ -207,7 +209,7 @@ $(function(){
 
 			table
 				// set dimension
-				.dimension(data.date.dimension)
+				.dimension(data.id.dimension)
 				// data table does not use crossfilter group but rather a closure
 				// as a grouping function
 				.group(function() {})
@@ -243,6 +245,31 @@ $(function(){
 				.sortBy(function(d){ return parseInt(d.request_timestamp, 10); });
 				// (optional) sort order, :default ascending
 
+			dc.renderAll();
+		});
+	} else if($('body').hasClass('template-hosts')) {
+		$.getJSON('data.php' + window.location.search, function(o) {
+			var filter	= crossfilter(o.discrete);
+			var dimension = filter.dimension(function(d) {
+				return d.id;
+			});
+			var table = dc.dataTable("#data-table");
+			table.dimension(dimension).group(function() {})
+				.columns([
+					function(d) {
+						return App.render('link', {
+							url: App.buildURL('uris', {host_id: d.host_id}),
+							text: d.host
+						});
+					},
+					function(d) {
+						return d.request_count;
+					},
+					function(d) { return format.microseconds(d.wt); },
+					function(d) { return format.microseconds(d.cpu); },
+					function(d) { return format.bytes(d.mu); },
+					function(d) { return format.bytes(d.pmu); }
+				]);
 			dc.renderAll();
 		});
 	}
