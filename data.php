@@ -108,13 +108,22 @@ else
 }
 
 $xhprof_data_obj	= new Data($config['pdo']);
-$data = array('type' => 'error', 'message' => 'No data was returned from this template.');
 if(!\ay\error_present()) {
 	if($_GET['xhprof']['template'] == 'requests') {
 		$data = $xhprof_data_obj->getRequests($_GET['xhprof']['query']);
-	} elseif ($_GET['xhprof']['template'] == 'hosts') {
+	} elseif($_GET['xhprof']['template'] == 'hosts') {
 		$data = $xhprof_data_obj->getHosts($_GET['xhprof']['query']);
+	} elseif($_GET['xhprof']['template'] == 'uris') {
+		$data	= $xhprof_data_obj->getUris($_GET['xhprof']['query']);
 	}
+}
+if(empty($data)) {
+	$data = array(
+		'messages' => array(
+			'type' => 'notice',
+			'message' => 'No results matching your search were found.',
+		)
+	);
 }
 echo json_encode($data);
 

@@ -282,5 +282,20 @@ $(function(){
 				]);
 			dc.renderAll();
 		});
+	} else if($('body').hasClass('template-uris')) {
+		$.getJSON('data.php' + window.location.search, function(o) {
+			var filter	= crossfilter(o.discrete);
+			var dimension = filter.dimension(function(d) {
+				return d.id;
+			});
+			var table = dc.dataTable("#data-table");
+			var cols = [table_columns.host, table_columns.uri, table_columns.request_count, table_columns.wt, table_columns.cpu, table_columns.mu, table_columns.pmu];
+			if(window.location.search.indexOf('host_id') != -1) {
+				cols.shift();
+			}
+			table.dimension(dimension).group(function() {})
+				.columns(cols);
+			dc.renderAll();
+		});
 	}
 });
