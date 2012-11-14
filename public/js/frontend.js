@@ -195,6 +195,10 @@ $(function(){
 						if (i === 0) return '';
 						if (i % 2 == 1)	return data.format(d);
 					});
+				$("a.reset", data.chart.anchor()).click(function() {
+					data.chart.filterAll();
+					dc.redrawAll();
+				});
 			});
 
 			counter
