@@ -25,6 +25,10 @@ App.buildURL = function(template, xhprof_query, xhprof) {
   return url + '?' + PHP.http_build_query(query);
 };
 
+App.render = function render(template, data) {
+	return $(ich[template](data)).clone().wrap('<p>').parent().html();
+};
+
 $(function(){
 	$('#navigation .button-filter').on('click', function(){
 		$('#filter').toggle();
@@ -171,16 +175,27 @@ $(function(){
 				.dimension(data.date.dimension)
 				// data table does not use crossfilter group but rather a closure
 				// as a grouping function
-				.group(function(d) {
-					//return (new Date(d.request_timestamp)).getFullYear();
-				})
-				// (optional) max number of records to be shown, :default = 25
-				.size(10)
+				.group(function() {})
 				// dynamic columns creation using an array of closures
 				.columns([
-					function(d) { return d.request_id; },
-					function(d) { return d.host; },
-					function(d) { return d.uri; },
+					function(d) {
+						return App.render('link', {
+							url: App.buildURL('request', {request_id: d.request_id}),
+							text: d.request_id
+						});
+					},
+					function(d) {
+						return App.render('link', {
+							url: App.buildURL('uris', {host_id: d.host_id}),
+							text: d.host
+						});
+					},
+					function(d) {
+						return App.render('link', {
+							url: App.buildURL('uris', {host_id: d.host_id, uri_id: d.uri_id}),
+							text: d.uri
+						});
+					},
 					function(d) { return d.request_method; },
 					function(d) { return format.microseconds(d.wt); },
 					function(d) { return format.microseconds(d.cpu); },
@@ -189,7 +204,7 @@ $(function(){
 					function(d) { return d.request_timestamp; }
 				])
 				// (optional) sort using the given field, :default = function(d){return d;}
-				.sortBy(function(d){ return d.request_timestamp; })
+				.sortBy(function(d){ return parseInt(d.request_timestamp, 10); })
 				// (optional) sort order, :default ascending
 				.order(d3.descending);
 

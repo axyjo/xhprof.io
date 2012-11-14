@@ -6,6 +6,11 @@ namespace ay\xhprof;
 <head>
 	<link rel="stylesheet" href="public/css/frontend.css" type="text/css" charset="utf-8">
 	<title>XHProf.io</title>
+
+	<!-- Templates -->
+	<script id="link" type="text/html">
+      <a href="{{url}}">{{text}}</a>
+    </script>
 </head>
 <body class="template-<?=$template['file']?>">
 	<?php require __DIR__ . '/header.inc.tpl.php';?>
