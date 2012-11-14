@@ -576,6 +576,9 @@ table td.metrics span.measure {
   background: none;
   font-family: monospace;
 }
+.template-requests tr.group {
+  display: none;
+}
 .dc-data-table {
   width: 700px;
   margin-bottom: 50px;
