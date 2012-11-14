@@ -21,5 +21,6 @@ register_shutdown_function(function(){
 
 	require_once __DIR__ . '/../xhprof/classes/data.php';
 	$xhprof_data_obj	= new \ay\xhprof\Data($config['pdo']);
-	$xhprof_data_obj->save($xhprof_data);
+	header('X-XhProf-Request-Id: ' . $xhprof_data_obj->save($xhprof_data));
+	ob_end_flush();
 });

@@ -6,3 +6,4 @@ if(php_sapi_name() == 'cli')
 }
 
 xhprof_enable(XHPROF_FLAGS_MEMORY | XHPROF_FLAGS_CPU);
+ob_start();
