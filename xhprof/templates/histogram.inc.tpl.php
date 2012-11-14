@@ -23,7 +23,7 @@ namespace ay\xhprof;
 			<div class="label">Memory Usage</div>
 			<svg class="histogram-mu"></svg>
 		</div>
-		<div class="column">
+		<div class="column" id="histogram-pmu">
 			<div class="label">Peak Memory Usage</div>
 			<svg class="histogram-pmu"></svg>
 		</div>
