@@ -106,6 +106,38 @@ $(function(){
 		}
 	};
 
+	var table_columns = {
+		host: function(d) {
+			return App.render('link', {
+				url: App.buildURL('uris', {host_id: d.host_id}),
+				text: d.host
+			});
+		},
+		request: function(d) {
+			return App.render('link', {
+				url: App.buildURL('request', {request_id: d.request_id}),
+				text: d.request_id
+			});
+		},
+		uri: function(d) {
+			return App.render('link', {
+				url: App.buildURL('uris', {host_id: d.host_id, uri_id: d.uri_id}),
+				text: d.uri
+			});
+		},
+		request_count: function(d) {
+			return d.request_count;
+		},
+		wt: function(d) { return format.microseconds(d.wt); },
+		cpu: function(d) { return format.microseconds(d.cpu); },
+		mu: function(d) { return format.bytes(d.mu); },
+		pmu: function(d) { return format.bytes(d.pmu); },
+		request_method: function(d) { return d.request_method; },
+		request_timestamp: function(d) { return d.request_timestamp; }
+
+	};
+
+
 	if($('body').hasClass('template-requests')) {
 
 
@@ -215,30 +247,15 @@ $(function(){
 				.group(function() {})
 				// dynamic columns creation using an array of closures
 				.columns([
-					function(d) {
-						return App.render('link', {
-							url: App.buildURL('request', {request_id: d.request_id}),
-							text: d.request_id
-						});
-					},
-					function(d) {
-						return App.render('link', {
-							url: App.buildURL('uris', {host_id: d.host_id}),
-							text: d.host
-						});
-					},
-					function(d) {
-						return App.render('link', {
-							url: App.buildURL('uris', {host_id: d.host_id, uri_id: d.uri_id}),
-							text: d.uri
-						});
-					},
-					function(d) { return d.request_method; },
-					function(d) { return format.microseconds(d.wt); },
-					function(d) { return format.microseconds(d.cpu); },
-					function(d) { return format.bytes(d.mu); },
-					function(d) { return format.bytes(d.pmu); },
-					function(d) { return d.request_timestamp; }
+					table_columns.request,
+					table_columns.host,
+					table_columns.uri,
+					table_columns.request_method,
+					table_columns.wt,
+					table_columns.cpu,
+					table_columns.mu,
+					table_columns.pmu,
+					table_columns.request_timestamp
 				])
 				.order(d3.descending)
 				// (optional) sort using the given field, :default = function(d){return d;}
@@ -256,19 +273,12 @@ $(function(){
 			var table = dc.dataTable("#data-table");
 			table.dimension(dimension).group(function() {})
 				.columns([
-					function(d) {
-						return App.render('link', {
-							url: App.buildURL('uris', {host_id: d.host_id}),
-							text: d.host
-						});
-					},
-					function(d) {
-						return d.request_count;
-					},
-					function(d) { return format.microseconds(d.wt); },
-					function(d) { return format.microseconds(d.cpu); },
-					function(d) { return format.bytes(d.mu); },
-					function(d) { return format.bytes(d.pmu); }
+					table_columns.host,
+					table_columns.request_count,
+					table_columns.wt,
+					table_columns.cpu,
+					table_columns.mu,
+					table_columns.pmu
 				]);
 			dc.renderAll();
 		});
