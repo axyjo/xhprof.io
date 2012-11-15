@@ -112,6 +112,7 @@ if(!\ay\error_present()) {
 	if($_GET['xhprof']['template'] == 'requests') {
 		$data = $xhprof_data_obj->getRequests($_GET['xhprof']['query']);
 	} elseif($_GET['xhprof']['template'] == 'hosts') {
+		$_GET['xhprof']['query']['dataset_size'] = PHP_INT_MAX;
 		$data = $xhprof_data_obj->getHosts($_GET['xhprof']['query']);
 	} elseif($_GET['xhprof']['template'] == 'uris') {
 		$data	= $xhprof_data_obj->getUris($_GET['xhprof']['query']);
