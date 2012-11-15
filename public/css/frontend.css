@@ -5283,8 +5283,32 @@ a[target="_blank"]:after {
   font-family: monospace;
 }
 .template-requests tr.group,
-.template-hosts tr.group {
+.template-hosts tr.group,
+.template-uris tr.group {
   display: none;
+}
+/* Metrics alignment */
+.template-hosts table td {
+  text-align: right;
+}
+.template-hosts table td:first-child,
+.template-hosts table td:nth-child(2) {
+  text-align: left;
+}
+.template-uris table td {
+  text-align: right;
+}
+.template-uris table td:first-child {
+  text-align: left;
+}
+.template-uris table.hosts-unfiltered td:nth-child(2) {
+  text-align: left;
+}
+.template-requests table td:nth-child(5),
+.template-requests table td:nth-child(6),
+.template-requests table td:nth-child(7),
+.template-requests table td:nth-child(8) {
+  text-align: right;
 }
 .dc-data-count {
   float: right;

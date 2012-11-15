@@ -195,9 +195,53 @@ a[target="_blank"]:after { content: url('../images/icon-url-blank.png'); vertica
 	}
 }
 
-.template-requests, .template-hosts {
+.template-requests, .template-hosts, .template-uris {
 	tr.group {
 		display: none;
+	}
+}
+
+/* Metrics alignment */
+
+
+.template-hosts {
+	table {
+		// Most of the cells are metrics, so we'll align them to the right.
+		td {
+			text-align: right;
+			&:first-child, &:nth-child(2) {
+			// The first two columns are not metrics..
+				text-align: left;
+			}
+		}
+	}
+}
+
+.template-uris {
+	table {
+		// Most of the cells are metrics, so we'll align them to the right.
+		td {
+			text-align: right;
+			&:first-child {
+			// The first column will either be hosts or URI.
+				text-align: left;
+			}
+		}
+		&.hosts-unfiltered {
+			td:nth-child(2) {
+				// If hosts is present, align URI to left as well.
+				text-align: left;
+			}
+		}
+	}
+}
+
+.template-requests {
+	table {
+		// Most of the cells are not metrics in this case.
+		td:nth-child(5), td:nth-child(6), td:nth-child(7), td:nth-child(8) {
+			text-align: right;
+		}
 	}
 }
 
