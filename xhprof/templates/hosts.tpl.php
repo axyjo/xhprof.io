@@ -2,7 +2,6 @@
 namespace ay\xhprof;
 
 require __DIR__ . '/form.inc.tpl.php';
-
 require __DIR__ . '/summary.inc.tpl.php';
 ?>
 

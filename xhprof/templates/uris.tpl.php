@@ -3,9 +3,13 @@ namespace ay\xhprof;
 
 require __DIR__ . '/form.inc.tpl.php';
 require __DIR__ . '/summary.inc.tpl.php';
+$table_class = "uris table table-striped table-bordered";
+if(empty($_GET['xhprof']['query']['host_id'])) {
+	$table_class .= " hosts-unfiltered";
+}
 ?>
 
-<table id="data-table" class="uris table table-striped table-bordered">
+<table id="data-table" class="<?=$table_class?>">
 	<thead>
 		<tr>
 			<?php if(empty($_GET['xhprof']['query']['host_id'])):?>
