@@ -136,7 +136,7 @@ $(function(){
 		mu: function(d) { return format.bytes(d.mu); },
 		pmu: function(d) { return format.bytes(d.pmu); },
 		request_method: function(d) { return d.request_method; },
-		request_timestamp: function(d) { return d.request_timestamp; }
+		request_timestamp: function(d) { return moment.unix(d.request_timestamp).format('MMMM Do YYYY, HH:mm:ss'); }
 
 	};
 
