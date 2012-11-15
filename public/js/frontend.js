@@ -82,16 +82,13 @@ $(function(){
 			return (Math.pow(1024, base - Math.floor(base))).toFixed(precision) + ' ' + suffixes[Math.floor(base)];
 		},
 		microseconds: function(number) {
-			var pad		= false;
 			var suffix	= '&mu;s';
-
+			number = parseFloat(number);
 			if (number >= 1000) {
 				number	= number / 1000;
 				suffix	= 'ms';
 
 				if (number >= 1000) {
-					pad		= true;
-
 					number	= number / 1000;
 					suffix	= 's';
 
@@ -102,7 +99,7 @@ $(function(){
 				}
 			}
 
-			return pad ? number.toFixed(2) + ' ' + suffix : number + ' ' + suffix;
+			return number.toFixed(2) + ' ' + suffix;
 		}
 	};
 
