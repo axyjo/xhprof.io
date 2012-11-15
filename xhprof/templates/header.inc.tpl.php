@@ -23,48 +23,15 @@ $navigation	= array
 	<div class="button button-summary"><a>Summary</a></div>
 </div>
 <?php
-unset($navigation);
-
-if(!\ay\error_present() && !empty($_GET['xhprof']['query'])):
-
-$labels	= array
-(
-	'host_id'			=> 'Host #',
-	'host'				=> 'Host',
-	'uri_id'			=> 'URI #',
-	'uri'				=> 'URI',
-	'request_id'		=> 'Request #',
-	'second_request_id'	=> 'Second Request #',
-	'callee_id'			=> 'Function #',
-	'datetime_from'		=> 'Date-time from',
-	'datetime_to'		=> 'Date-time to',
-	'dataset_size'		=> 'Dataset Size'
-);
-
-?>
+unset($navigation); ?>
+<script type="text/html" id="filters">
 <div class="filters">
 	<p>The following filters affect the displayed data:</p>
 	<dl>
-	<?php foreach($_GET['xhprof']['query'] as $k => $v):
-
-		if(!isset($labels[$k]))
-		{
-			throw new \Exception('Filter label is not defined.');
-		}
-
-		if($k == 'request_id'):
-	?>
-		<dt><?=$labels[$k]?></dt>
-		<dd><a href="<?=url('request', array('request_id' => $v))?>"><?=htmlspecialchars($v)?></a></dd>
-		<?php else:?>
-		<dt><?=$labels[$k]?></dt>
-		<dd><?=htmlspecialchars($v)?></dd>
-		<?php endif;?>
-	<?php endforeach;?>
+	{{#filters}}
+		<dt>{{label}}</dt>
+		<dd>{{{value}}}</dt>
+	{{/filters}}
 	</dl>
 </div>
-<?php
-
-unset($labels);
-
-endif;?>
+</script>

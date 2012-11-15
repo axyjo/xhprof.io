@@ -29,7 +29,58 @@ App.render = function render(template, data) {
 	return $(ich[template](data)).clone().wrap('<p>').parent().html();
 };
 
+App.parseQueryStringParams = function parseQueryString() {
+	var results = {};
+	var queryString = unescape(window.location.search.substring(1));
+	var kvPairs = queryString.split("&");
+	$.each(kvPairs, function(i, d) {
+		var split = d.split("=");
+		var obj_stack = split[0].split('[');
+		var ref = results;
+		$.each(obj_stack, function(i, k) {
+			if(i !== 0) {
+				obj_stack[i] = k.substring(0, k.length - 1);
+			}
+			if(i !== obj_stack.length - 1) {
+				if(ref[obj_stack[i]] === undefined) {
+					ref[obj_stack[i]] = {};
+				}
+				ref = ref[obj_stack[i]];
+			} else {
+				ref[obj_stack[i]] = split[1];
+			}
+		});
+	});
+	return results;
+};
+
 $(function(){
+	// Filters.
+	var qs = App.parseQueryStringParams();
+	if(qs && qs.xhprof && qs.xhprof.query) {
+		var labels = {
+			'host_id' : 'Host #',
+			'host' : 'Host',
+			'uri_id' : 'URI #',
+			'uri' : 'URI',
+			'request_id' : 'Request #',
+			'second_request_id' : 'Second Request #',
+			'callee_id' : 'Function #',
+			'datetime_from' : 'Date-time from',
+			'datetime_to' : 'Date-time to',
+			'dataset_size' : 'Dataset Size'
+		};
+		var data = {filters: []};
+		$.each(qs.xhprof.query, function(k, v) {
+			if(k == "request_id" || k == "second_request_id") {
+				v = '<a href="' + App.buildURL('request', {request_id: v}) + '">' + v + "</a>";
+			}
+			data.filters.push({label: labels[k], value: v});
+		});
+
+		$('#navigation').after(ich.filters(data));
+	}
+
 	$('#navigation .button-filter').on('click', function(){
 		$('#filter').toggle();
 		$(this).toggleClass('active');
