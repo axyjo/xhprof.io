@@ -116,10 +116,16 @@ $(function(){
 				text: d.request_id
 			});
 		},
-		uri: function(d) {
+		uri_aggregate: function(d) {
 			return App.render('link', {
 				url: App.buildURL('uris', {host_id: d.host_id, uri_id: d.uri_id}),
-				text: d.uri
+				text: decodeURIComponent(d.uri)
+			});
+		},
+		uri_requests: function(d) {
+			return App.render('link', {
+				url: App.buildURL('requests', {host_id: d.host_id, uri_id: d.uri_id}),
+				text: decodeURIComponent(d.uri)
 			});
 		},
 		request_count: function(d) {
@@ -246,18 +252,14 @@ $(function(){
 				.columns([
 					table_columns.request,
 					table_columns.host,
-					table_columns.uri,
+					table_columns.uri_aggregate,
 					table_columns.request_method,
 					table_columns.wt,
 					table_columns.cpu,
 					table_columns.mu,
 					table_columns.pmu,
 					table_columns.request_timestamp
-				])
-				.order(d3.descending)
-				// (optional) sort using the given field, :default = function(d){return d;}
-				.sortBy(function(d){ return parseInt(d.request_timestamp, 10); });
-				// (optional) sort order, :default ascending
+				]);
 
 			dc.renderAll();
 		});
@@ -286,7 +288,7 @@ $(function(){
 				return d.id;
 			});
 			var table = dc.dataTable("#data-table");
-			var cols = [table_columns.host, table_columns.uri, table_columns.request_count, table_columns.wt, table_columns.cpu, table_columns.mu, table_columns.pmu];
+			var cols = [table_columns.host, table_columns.uri_requests, table_columns.request_count, table_columns.wt, table_columns.cpu, table_columns.mu, table_columns.pmu];
 			if(window.location.search.indexOf('host_id') != -1) {
 				cols.shift();
 			}
