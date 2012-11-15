@@ -34,6 +34,7 @@ namespace ay\xhprof;
 	<script type="text/javascript" src="public/js/d3.v2.js"></script>
 	<script type="text/javascript" src="public/js/crossfilter.v1.js"></script>
 	<script type="text/javascript" src="public/js/dc.js"></script>
+	<script type="text/javascript" src="public/js/moment.js"></script>
 	<script type="text/javascript" src="public/js/frontend.js"></script>
 </body>
 </html>
