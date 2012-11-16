@@ -5282,9 +5282,9 @@ a[target="_blank"]:after {
   background: none;
   font-family: monospace;
 }
-.template-requests tr.group,
-.template-hosts tr.group,
-.template-uris tr.group {
+.template-requests tr.dc-table-group,
+.template-hosts tr.dc-table-group,
+.template-uris tr.dc-table-group {
   display: none;
 }
 /* Metrics alignment */
@@ -5309,6 +5309,45 @@ a[target="_blank"]:after {
 .template-requests table td:nth-child(7),
 .template-requests table td:nth-child(8) {
   text-align: right;
+}
+.template-request table td {
+  text-align: right;
+}
+.template-request table td:first-child {
+  text-align: left;
+}
+.template-request .label.group {
+  float: right;
+}
+.template-request .label.group.g-1 {
+  background-color: #1f77b4;
+}
+.template-request .label.group.g-2 {
+  background-color: #ff7f0e;
+}
+.template-request .label.group.g-3 {
+  background-color: #2ca02c;
+}
+.template-request .label.group.g-4 {
+  background-color: #d62728;
+}
+.template-request .label.group.g-5 {
+  background-color: #9467bd;
+}
+.template-request .label.group.g-6 {
+  background-color: #8c564b;
+}
+.template-request .label.group.g-7 {
+  background-color: #e377c2;
+}
+.template-request .label.group.g-8 {
+  background-color: #7f7f7f;
+}
+.template-request .label.group.g-9 {
+  background-color: #bcbd22;
+}
+.template-request .label.group.g-10 {
+  background-color: #17becf;
 }
 .dc-data-count {
   float: right;

@@ -12,32 +12,32 @@ $sort_by		= function($name) use ($grouped_stack)
 		{
 			return 0;
 		}
-		
+
 		return $a['metrics'][$name] > $b['metrics'][$name] ? -1 : 1;
 	});
-	
+
 	return $grouped_stack;
 };
 
 $get_values		= function($name, $limit = 5) use ($sort_by)
 {
 	$data		= array_map(function($e) use ($name) { $e['value'] = $e['metrics'][$name]; unset($e['metrics']); return $e; }, $sort_by($name));
-	
+
 	$displayed	= array_slice($data, 0, $limit);
-	
+
 	$other		= array
 	(
 		'index'	=> $limit+1,
 		'name'	=> 'other',
 		'value'	=> array_sum(array_map(function($e){ return $e['value']; }, array_slice($data, $limit)))
 	);
-	
+
 	array_push($displayed, $other);
-	
+
 	$displayed	= array_filter($displayed, function($e){
 		return $e['value'] > 0;
 	});
-	
+
 	return $displayed;
 };
 ?>
@@ -48,7 +48,7 @@ $get_values		= function($name, $limit = 5) use ($sort_by)
 	<svg class="pie-mu"></svg>
 	<svg class="pie-pmu"></svg>
 </div>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 $(function(){
 	var radius_inner	= 0;
 	var radius_outer	= 50;
@@ -59,4 +59,4 @@ $(function(){
 	ay_pie_chart('pie-mu', <?=json_encode($get_values('mu'))?>, {radius_inner: radius_inner, radius_outer: radius_outer});
 	ay_pie_chart('pie-pmu', <?=json_encode($get_values('pmu'))?>, {radius_inner: radius_inner, radius_outer: radius_outer});
 });
-</script>
+</script> -->

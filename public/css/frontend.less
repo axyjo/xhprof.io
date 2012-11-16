@@ -196,7 +196,7 @@ a[target="_blank"]:after { content: url('../images/icon-url-blank.png'); vertica
 }
 
 .template-requests, .template-hosts, .template-uris {
-	tr.group {
+	tr.dc-table-group {
 		display: none;
 	}
 }
@@ -242,6 +242,32 @@ a[target="_blank"]:after { content: url('../images/icon-url-blank.png'); vertica
 		td:nth-child(5), td:nth-child(6), td:nth-child(7), td:nth-child(8) {
 			text-align: right;
 		}
+	}
+}
+
+.template-request {
+	table {
+		// Most of the cells are metrics, so we'll align them to the right.
+		td {
+			text-align: right;
+			&:first-child {
+			// The first column will be the callees.
+				text-align: left;
+			}
+		}
+	}
+	.label.group {
+		float: right;
+		&.g-1 { background-color: #1f77b4; }
+		&.g-2 { background-color: #ff7f0e; }
+		&.g-3 { background-color: #2ca02c; }
+		&.g-4 { background-color: #d62728; }
+		&.g-5 { background-color: #9467bd; }
+		&.g-6 { background-color: #8c564b; }
+		&.g-7 { background-color: #e377c2; }
+		&.g-8 { background-color: #7f7f7f; }
+		&.g-9 { background-color: #bcbd22; }
+		&.g-10 { background-color: #17becf; }
 	}
 }
 

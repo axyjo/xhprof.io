@@ -1,7 +1,7 @@
 <?php
 namespace ay\xhprof;
 
-$aggregated_metrics	= $xhprof_data_obj->getMetricsSummary();
+/*$aggregated_metrics	= $xhprof_data_obj->getMetricsSummary();
 
 $labels		= array
 (
@@ -43,4 +43,4 @@ $labels		= array
 			</tr>
 		</tfoot>
 	</table>
-</div>
+</div>*/

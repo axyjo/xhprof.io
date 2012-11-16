@@ -349,7 +349,7 @@ function error_exception_handler()
 
 
 
-	if(DEBUG)
+	if(!DEBUG)
 	{
 		if($data['type'] === NULL)
 		{
