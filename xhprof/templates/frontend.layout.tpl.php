@@ -12,13 +12,13 @@ namespace ay\xhprof;
       <a href="{{url}}">{{text}}</a>
     </script>
 </head>
-<body class="template-<?=$template['file']?>">
+<body class="template-<?php echo $template['file']?>">
 	<div class="container-fluid">
 		<?php require __DIR__ . '/header.inc.tpl.php';?>
 
-		<?=\ay\display_messages()?>
+		<?php echo \ay\display_messages()?>
 
-		<?=$template['body']?>
+		<?php echo $template['body']?>
 
 		<?php require __DIR__ . '/footer.inc.tpl.php';?>
 	</div>
