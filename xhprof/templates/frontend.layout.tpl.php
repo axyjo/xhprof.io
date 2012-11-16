@@ -25,7 +25,7 @@ namespace ay\xhprof;
 	<script type="text/javascript">
 		var App = App || {};
 		App.config = {
-			base_url: "<?=BASE_URL?>"
+			base_url: "<?php echo BASE_URL ?>"
 		}
 	</script>
 	<script type="text/javascript" src="public/js/php.js"></script>
